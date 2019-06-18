@@ -1,0 +1,34 @@
+digraph servers {
+
+    rankdir="LR"
+
+	subgraph cluster_artifactory {
+	    label="Artifactory Trigger";
+	    jenkins [label = "Jenkins", fillcolor=firebrick2, style=filled]
+	    artifactory [label = "Artifactory", fillcolor=forestgreen, style=filled]
+	    spinnaker [label = "Spinnaker", fillcolor=deepskyblue3, style=filled]
+	    build [shape=record, label = "{build name | build number}"]
+	    gav [shape=record, label = "{jar | {{build name | build number} | {group | artifact | version}}}"]
+
+        jenkins -> build [dir=none]
+        build -> artifactory
+        artifactory -> gav [dir=none color=yellowgreen]
+        gav -> spinnaker [color= yellowgreen]
+    }
+
+	subgraph cluster_jenkins {
+	    label="Jenkins Trigger";
+	    jenkins_old [label = "Jenkins", fillcolor=firebrick2, style=filled]
+	    artifactory_old [label = "Artifactory", fillcolor=forestgreen, style=filled]
+	    spinnaker_old [label = "Spinnaker", fillcolor=deepskyblue3, style=filled]
+	    properties [shape=record, label = "{properties}"]
+	    jar [shape=record, label = "{jar}"]
+
+        jenkins_old -> properties [dir=none color=yellowgreen]
+        properties -> spinnaker_old [color=yellowgreen]
+        spinnaker_old -> artifactory_old [label="request"]
+        artifactory_old -> jar [dir=none]
+        jar -> spinnaker_old
+    }
+	
+  }

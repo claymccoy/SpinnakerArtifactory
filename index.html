@@ -8,7 +8,7 @@
 
 		<link rel="stylesheet" href="css/reset.css">
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/clay.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/monokai.css">
@@ -25,8 +25,368 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-background="lib/img/artifactBoat.jpg">
+					<h1>Set Sail with Spinnaker and Artifactory</h1>
+					<p><small>Created by Clay McCoy</small></p>
+						<br/>
+						<p><small>latest version of slides is on Github</small></p>
+						<pre>git clone https://github.com/claymccoy/SpinnakerArtifactory.git
+open SpinnakerArtifactory/index.html
+</pre>
+				</section>
+
+				<section data-background="lib/img/wakeboard.jpg">
+					<div style="position:relative;left:25%;">
+						<h2>Clay McCoy</h2>
+						<ul>
+								
+							<li>
+								<img class="stretch" src="lib/img/twitter.png" /> @ClayMcCoy
+							</li>
+							<li>Helped start Spinnaker at Netflix</li>
+							<li>Principal Software Engineer @ Pivotal</a></li>
+						</ul>
+					</div>
+				</section>
+
+				<section data-background="lib/img/spinOutline.png">
+					<h1>Outline</h1>
+						<ul>
+							<li>Continuous (Integration | Delivery)</li>
+							<li>Spinnaker
+								<ul>
+									<li>Inventory</li>
+									<li>Pipelines</li>
+								</ul>
+							</li>
+							<li>Artifactory
+								<ul>
+									<li>Build Info</li>
+									<li>AQL</li>
+								</ul>
+							</li>
+							<li>Spinnaker Artifactory Integration</li>
+						</ul>
+				</section>
+
+				<section>
+						<h1>Continuous Integration</h1>
+					<img class="stretch" src="lib/img/goodCi.png" />
+				</section>
+				<section data-background="lib/img/toolMisuse.jpeg">
+					<h1>Using a CI Tool for CD</h1>
+					<ul>
+							<li>script at the end of a successful build</li>
+							<li>bolted on support in some CI tools</li>
+							<li>lack inventory and best practices</li>
+						</ul>
+						<aside class="notes">
+								<ul>
+										<li>what's your deployment tool? Jenkins</li>
+									</ul>
+						</aside>
+				</section>
+				<section data-background="lib/img/niceDrill.jpg">
+					<h1>Dedicated Delivery Tool</h1>
+					<ul>
+							<li>cloud inventory</li>
+							<li>zero-downtime blue/green deployments</li>
+							<li>canary analysis</li>
+							<li>rollbacks</li>
+						</ul>
+				</section>
+				<section>
+						<img class="stretch shadow" src="lib/img/ciVsCd.png" />
+						<a href="https://www.youtube.com/watch?v=wj4VfjXeVok&t=6s">
+							from "Scaling Application Deployments Across Target’s platforms (Cloud Next '18)"</a>
+					</section>
+				<section>
+					<h1>Artifact is CI/CD Boundary</h1>
+					<img class="stretch shadow" src="lib/img/ciCdBoundary.png" />
+					<a href="https://www.youtube.com/watch?v=wj4VfjXeVok&t=6s">
+						from "Scaling Application Deployments Across Target’s platforms (Cloud Next '18)"</a>
+
+						<aside class="notes">
+								<ul>
+										<li>do all the testing you can on the left</li>
+										<li>produce a deployable artifact</li>
+										<li>deploy artifact</li>
+										<li>necessary runtime checks (integration testing, canaries, manual judgement)</li>
+										<li>I'll show tracing of metadata though</li>
+										<li>commit -> build -> artifact -> pipeline -> deployment</li>
+									</ul>
+						</aside>
+				</section>
+
+
+				<section data-background="lib/img/spin-logo-800x400.jpg">
+					<h1>Dedicated Delivery Tool</h1>
+					<h2 class="fragment">But first...</h2>
+				</section>
+				<section data-background="lib/img/asgard-blog-post-cluster.png">
+					<h1>Asgard</h1>
+					<ul>
+						<li>monolith Grails web app</li>
+						<li>deployment to AWS only</li>
+						<li>manual control of cloud inventory</li>
+						<li>open sourced on Github</li>
+					</ul>
+				</section>
+				<section data-background="lib/img/spin-logo-800x400.jpg">
+					<h1>Spinnaker</h1>
+					<ul>
+							<li>several (micro)services</li>
+							<li>deployment many clouds</li>
+							<li>automate cloud inventory with pipelines</li>
+							<li>open sourced on Github</li>
+						</ul>
+				</section>
+				<section>
+					<img class="stretch" src="lib/img/spinOSS.png" />
+				</section>
+				<section>
+					<img class="stretch" src="lib/img/spinIntegs.png" />
+					<aside class="notes">
+							<ul>
+									<li>specifically demo jvm apps build with Jenkins, artifacts stored in artifactory, and deployed to CF with spinnaker</li>
+								</ul>
+					</aside>
+				</section>
+				<section>
+					<img class="stretch" src="lib/img/spinTopology.png" />
+					<a href="https://www.spinnaker.io/reference/architecture/">
+						https://www.spinnaker.io/reference/architecture/</a>
+						<aside class="notes">
+								<ul>
+										<li>don't need them all</li>
+										<li>explain them</li>
+										<li>hal for install</li>
+										<li>scale up clouddriver</li>
+										<li>usually I just check them out and run ./gradlew, need a spinnaker.yml, where to get basic one?</li>
+									</ul>
+						</aside>
+				</section>
+				<section>
+						<h1>Inventory</h1>
+					<img class="stretch shadow" src="lib/img/spinInventory.png" />
+				</section>
+				<section>
+						<h1>Pipeline</h1>
+						<img class="stretch shadow" src="lib/img/spinPipeline.png" />
+						<a href="https://www.spinnaker.io/guides/user/pipeline/expressions/">
+							https://www.spinnaker.io/guides/user/pipeline/expressions/</a>
+							<aside class="notes">
+									<ul>
+											<li>execution view</li>
+											<li>very simple</li>
+											<li>stage graph</li>
+											<li>promote through environments</li>
+											<li>necessary runtime checks (integration testing, canaries, manual judgement)</li>
+										</ul>
+							</aside>
+					</section>
+					<section>
+							<h1>Stages</h1>
+							<img class="stretch shadow" src="lib/img/spinStages.png" />
+							<a href="https://www.spinnaker.io/reference/pipeline/stages/">
+								https://www.spinnaker.io/reference/pipeline/stages/</a>
+						</section>
+						<section>
+								<h1>Expressions</h1>
+								<img class="stretch shadow" src="lib/img/spinExpresions.png" />
+								<a href="https://www.spinnaker.io/reference/pipeline/expressions/">
+									https://www.spinnaker.io/reference/pipeline/expressions/</a>
+							</section>
+				<section>
+					<h1>Deployment Strategies</h1>
+					<img class="stretch" src="lib/img/deployment-strategies.png" />
+					<a href="https://www.spinnaker.io/concepts">
+						https://www.spinnaker.io/concepts</a>
+				</section>
+				<section>
+					<h1>Canary Analysis</h1>
+					<img class="stretch" src="lib/img/canaryAnalysis.png" />
+					<a href="https://cloud.google.com/solutions/automated-canary-analysis-kubernetes-engine-spinnaker">
+						https://cloud.google.com/solutions/automated-canary-analysis-kubernetes-engine-spinnaker</a>
+				</section>
+
+				<section>
+						<img class="stretch" src="lib/img/artifactory.png" />
+					</section>
+				<section>
+						<h2>CI Releases Artifacts to Artifactory</h2>
+						<img class="stretch" src="lib/img/ArtifactoryScreenshot.jpg" />
+						<h2>CD Deploys Artifacts from Artifactory</h2>
+				</section>
+				<section>
+						<h1>Artifactory Build Info</h1>
+							<img class="stretch" src="lib/img/artifactoryBuildInfo.png" />
+					</section>
+				<section data-background="lib/img/artifactoryBuildInfo.png">
+					<h1>Artifactory Build Info</h1>
+					<ul>
+						<li>See published builds and results</li>
+						<li>Explore relationships between published artifacts and dependencies</li>
+						<li>Obtain information about the build environment</li>
+						</ul>
+				</section>
+				<section>
+					<h1>Publishing Build Info to Artifactory</h1>
+					<img class="stretch" src="lib/img/publishBuildInfo.png" />
+					<a href="https://www.jfrog.com/confluence/display/RTF/Build+Integration">
+						https://www.jfrog.com/confluence/display/RTF/Build+Integration</a>
+				</section>
+				<section>
+					<h1>Artifactory Query Language (AQL)</h1>
+					<pre><code data-line-numbers>// Return all artifacts of the "artifactory" build.
+items.find({"@build.name":{"$eq":"artifactory"}})
+  
+// Return all builds that have a dependency with a license that is not Apache.
+builds.find({"module.dependency.item.@license":{"$nmatch":"Apache-*"}})
+  
+// Return all archives containing a file called "org/artifactory/Main.class".
+items.find({"archive.entry.name":{"$eq":"Main.class"} , "archive.entry.path":{"$eq":"org/artifactory"}})
+					</code></pre>
+					<a href="https://www.jfrog.com/confluence/display/RTF/Artifactory+Query+Language">
+						https://www.jfrog.com/confluence/display/RTF/Artifactory+Query+Language</a>
+				</section>
+				<section>
+						<h1>AQL Model</h1>
+						<img class="stretch" src="lib/img/AQLArchitecture6.0.png" />
+						<a href="https://www.jfrog.com/confluence/display/RTF/Artifactory+Query+Language">
+							https://www.jfrog.com/confluence/display/RTF/Artifactory+Query+Language</a>
+					</section>
+				<section>
+						<h1>Get Latest Artifacts with Build Info</h1>
+						<pre><code data-line-numbers>items.find({
+	"repo":"libs-snapshot-local",
+	"modified":{"$gt":"2019-05-21T16:53:11.671Z"},
+	"path":{"$match":"*"},
+	"name": {"$match":"*.pom"}
+}).include("path", "repo", "name", "artifact.module.build")
+						</code></pre>
+						<a href="https://github.com/spinnaker/igor/blob/a61e9e57ab1548612f453ef3d8fc446f070cd95f/igor-web/src/main/java/com/netflix/spinnaker/igor/artifactory/ArtifactoryBuildMonitor.java#L124">
+							github.com/spinnaker/igor - ArtifactoryBuildMonitor.java</a>
+					</section>
+					
+					<section data-background="lib/img/boatTreasure.png">
+						<h1>Spinnaker/Artifactory Integration</h1>
+					</section>
+					<section>
+						<h1>Jenkins Trigger</h1>
+						<img class="stretch shadow" src="lib/img/SpinJenkinsTrigger.png" />
+					</section>
+					<section>
+						<h1>Artifactory Trigger</h1>
+						<img class="stretch shadow" src="lib/img/SpinArtifactoryTrigger.png" />
+					</section>
+					<section>
+							<h1>Metadata Stowaways</h1>
+							<img class="stretch shadow" src="lib/img/cfEnvVars.png" />
+							<aside class="notes">
+									<ul>
+											<li>metadata in env vars of app (server group)</li>
+											<li>every cloud impl does this differently</li>
+											<li>some use tags or naming</li>
+											<li>even though this metadata is not cloud specific</li>
+											<li>code to get metadata into system and display it is shared</li>
+										</ul>
+							</aside>
+					</section>
+					<section data-background="lib/img/setupDominos.png">
+						<h1>Setup</h1>
+					</section>
+					<section>
+						<video class="stretch" src="lib/video/0_buildConfig.mov"></video>
+					</section>
+					<section>
+							<h1>Publish Build Info</h1>
+							<pre><code data-line-numbers>node {
+	def server = Artifactory.server 'local_artifactory'
+	def rtMaven = Artifactory.newMavenBuild()
+	def buildInfo
+
+	stage ('Clone') {
+		git url: 'https://github.com/claymccoy/springDeployTest.git'
+	}
+
+	stage ('Artifactory configuration') {
+		rtMaven.tool = 'M3'
+		rtMaven.deployer releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: server
+		rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
+		buildInfo = Artifactory.newBuildInfo()
+		buildInfo.env.capture = true
+	}
+
+	stage ('Exec Maven') {
+		rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
+	}
+
+	stage ('Publish build info') {
+		server.publishBuildInfo buildInfo
+	}
+}
+							</code></pre>
+						</section>
+					<section>
+						<h1>Artifactory Trigger</h1>
+						<img class="stretch shadow" src="lib/img/artifactory-trigger.png" />
+						<a href="https://www.spinnaker.io/guides/tutorials/codelabs/artifactory-to-cf/">
+							https://www.spinnaker.io/guides/tutorials/codelabs/artifactory-to-cf/</a>
+					</section>
+					<section>
+						<h1>Deployment Artifact</h1>
+						<img class="stretch shadow" src="lib/img/artifactory-expected-artifact.png" />
+						<a href="https://www.spinnaker.io/guides/tutorials/codelabs/artifactory-to-cf/">
+							https://www.spinnaker.io/guides/tutorials/codelabs/artifactory-to-cf/</a>
+					</section>
+					<section>
+							<video class="stretch" src="lib/video/1_pipelineTriggerConfig.mov"></video>
+					</section>
+					<section>
+							<h1>Configure Server Group</h1>
+							<img class="stretch shadow" src="lib/img/server-group.png" />
+							<a href="https://www.spinnaker.io/guides/tutorials/codelabs/artifactory-to-cf/">
+								https://www.spinnaker.io/guides/tutorials/codelabs/artifactory-to-cf/</a>
+					</section>
+					<section>
+							<video class="stretch" src="lib/video/2_pipelineDeployConfig.mov"></video>
+						</section>
+					<section>
+							<video class="stretch" src="lib/video/3_pipelineStagesAndJson.mov"></video>
+						</section>
+					<section data-background="lib/img/haru-shiba-inu-knocks-down-1000-dominos.gif">
+						<h1>Deploy!</h1>
+					</section>
+					<section>
+							<video class="stretch" src="lib/video/4_startbuild.mov"></video>
+					</section>
+					<section>
+							<video class="stretch" src="lib/video/5_createServerGroup.mov"></video>
+							<aside class="notes">
+									<ul>
+											<li>many stages</li>
+											<li>JSON representation</li>
+											<li>put JSON in Github?</li>
+											<li>pipeline as code</li>
+										</ul>
+							</aside>
+					</section>
+					<section data-background="lib/img/serverGroupMetadata.png">
+						<h1>Version Metadata</h1>
+						<p>trace server group back to...</p>
+							<ul>
+								<li>artifact version deployed</li>
+								<li>build that produced artifact</li>
+								<li>commit using either link (directly in Spinnaker too?)</li>
+								<li>Jira issues in the future?</li>
+							</ul>
+					</section>
+
+					<section data-background="lib/img/tilt-dog.jpg">
+						<h1 style="position:relative;left:40%;">Questions?</h1>
+					</section>
+
 			</div>
 		</div>
 
@@ -37,6 +397,7 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				hash: true,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },

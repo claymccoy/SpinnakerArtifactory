@@ -1,0 +1,16 @@
+digraph servers {
+
+	jenkins [label = "Jenkins", fillcolor=firebrick2, style=filled]
+	artifactory [label = "Artifactory", fillcolor=forestgreen, style=filled]
+	spinnaker [label = "Spinnaker", fillcolor=deepskyblue3, style=filled]
+	serverGroup [shape=record, label = "Server Group", fillcolor=slateblue, style=filled]
+	trigger [shape=record, label = "{jar | properties?}"]
+	jar [shape=record, label = "{jar}"]
+
+    jenkins -> trigger [dir=none color=yellowgreen]
+    trigger -> spinnaker [color=yellowgreen]
+    jenkins -> jar [dir=none]
+    jar -> artifactory
+    spinnaker -> serverGroup
+	
+}

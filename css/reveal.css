@@ -1038,12 +1038,12 @@ body {
   display: block; }
 
 .reveal .slide-background.present {
-  opacity: 1;
+  opacity: 0.3 !important;
   visibility: visible;
   z-index: 2; }
 
 .print-pdf .reveal .slide-background {
-  opacity: 1 !important;
+  opacity: 0.3 !important;
   visibility: visible !important; }
 
 /* Video backgrounds */
